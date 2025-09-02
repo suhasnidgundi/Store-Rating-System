@@ -1,0 +1,312 @@
+{
+  "info": {
+    "_postman_id": "b4d9c7f2-3a90-4b0e-9e9a-9d0cd5d0b7aa",
+    "name": "Store Rating System API",
+    "description": "Postman collection for Express + Prisma backend. Use an OWNER or ADMIN token for protected routes. Note: ADMIN cannot be created via /auth/register (only USER/OWNER).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:5000/api", "type": "string" },
+    { "key": "accessToken", "value": "", "type": "string" },
+    { "key": "refreshToken", "value": "", "type": "string" },
+    { "key": "userId", "value": "", "type": "string" },
+    { "key": "storeId", "value": "", "type": "string" },
+    { "key": "ratingId", "value": "", "type": "string" }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [{ "key": "token", "value": "{{accessToken}}", "type": "string" }]
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register (USER)",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/auth/register", "host": ["{{baseUrl}}"], "path": ["auth", "register"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Test User\",\n  \"email\": \"user1@example.com\",\n  \"password\": \"Password123!\",\n  \"address\": \"123 Main St\",\n  \"role\": \"USER\"\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 201', () => pm.response.code === 201);",
+                  "const json = pm.response.json();",
+                  "pm.collectionVariables.set('accessToken', json.tokens.accessToken);",
+                  "pm.collectionVariables.set('refreshToken', json.tokens.refreshToken);",
+                  "pm.collectionVariables.set('userId', json.user.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Register (OWNER)",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/auth/register", "host": ["{{baseUrl}}"], "path": ["auth", "register"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Owner One\",\n  \"email\": \"owner1@example.com\",\n  \"password\": \"Password123!\",\n  \"address\": \"500 Owner Rd\",\n  \"role\": \"OWNER\"\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 201', () => pm.response.code === 201);",
+                  "const json = pm.response.json();",
+                  "pm.collectionVariables.set('accessToken', json.tokens.accessToken);",
+                  "pm.collectionVariables.set('refreshToken', json.tokens.refreshToken);",
+                  "pm.collectionVariables.set('userId', json.user.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Login",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/auth/login", "host": ["{{baseUrl}}"], "path": ["auth", "login"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"user1@example.com\",\n  \"password\": \"Password123!\"\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.code === 200);",
+                  "const json = pm.response.json();",
+                  "pm.collectionVariables.set('accessToken', json.tokens.accessToken);",
+                  "pm.collectionVariables.set('refreshToken', json.tokens.refreshToken);",
+                  "pm.collectionVariables.set('userId', json.user.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Refresh Token",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/auth/refresh", "host": ["{{baseUrl}}"], "path": ["auth", "refresh"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"refreshToken\": \"{{refreshToken}}\"\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.code === 200);",
+                  "const json = pm.response.json();",
+                  "pm.collectionVariables.set('accessToken', json.tokens.accessToken);",
+                  "pm.collectionVariables.set('refreshToken', json.tokens.refreshToken);"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "Get Users (ADMIN only)",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/users?page=1&pageSize=10", "host": ["{{baseUrl}}"], "path": ["users"], "query": [{ "key": "page", "value": "1" }, { "key": "pageSize", "value": "10" }] }
+          }
+        },
+        {
+          "name": "Get Me",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/users/me", "host": ["{{baseUrl}}"], "path": ["users", "me"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": { "exec": ["const json = pm.response.json();", "if (json.user?.id) pm.collectionVariables.set('userId', json.user.id);"] }
+            }
+          ]
+        },
+        {
+          "name": "Get User by ID (ADMIN only)",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/users/{{userId}}", "host": ["{{baseUrl}}"], "path": ["users", "{{userId}}"] }
+          }
+        },
+        {
+          "name": "Update User (self or ADMIN)",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/users/{{userId}}", "host": ["{{baseUrl}}"], "path": ["users", "{{userId}}"] },
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"Updated Name\"\n}" }
+          }
+        },
+        {
+          "name": "Delete User (self or ADMIN)",
+          "request": {
+            "method": "DELETE",
+            "url": { "raw": "{{baseUrl}}/users/{{userId}}", "host": ["{{baseUrl}}"], "path": ["users", "{{userId}}"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Stores",
+      "item": [
+        {
+          "name": "List Stores",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/stores?q=&minRating=0&maxRating=5&page=1&pageSize=10&sort=createdAt&order=desc",
+              "host": ["{{baseUrl}}"],
+              "path": ["stores"],
+              "query": [
+                { "key": "q", "value": "" },
+                { "key": "ownerId", "value": "", "disabled": true },
+                { "key": "minRating", "value": "0" },
+                { "key": "maxRating", "value": "5" },
+                { "key": "page", "value": "1" },
+                { "key": "pageSize", "value": "10" },
+                { "key": "sort", "value": "createdAt" },
+                { "key": "order", "value": "desc" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Store by ID",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/stores/{{storeId}}", "host": ["{{baseUrl}}"], "path": ["stores", "{{storeId}}"] }
+          }
+        },
+        {
+          "name": "Create Store (OWNER/ADMIN)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/stores", "host": ["{{baseUrl}}"], "path": ["stores"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Coffee Hub\",\n  \"email\": \"coffeehub@example.com\",\n  \"address\": \"42 Bean Street\"\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": { "exec": ["pm.test('Status 201', () => pm.response.code === 201);", "const json = pm.response.json();", "if (json.store?.id) pm.collectionVariables.set('storeId', json.store.id);"] }
+            }
+          ]
+        },
+        {
+          "name": "Update Store (OWNER/ADMIN)",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/stores/{{storeId}}", "host": ["{{baseUrl}}"], "path": ["stores", "{{storeId}}"] },
+            "body": { "mode": "raw", "raw": "{\n  \"address\": \"99 Updated Ave\"\n}" }
+          }
+        },
+        {
+          "name": "Delete Store (OWNER/ADMIN)",
+          "request": {
+            "method": "DELETE",
+            "url": { "raw": "{{baseUrl}}/stores/{{storeId}}", "host": ["{{baseUrl}}"], "path": ["stores", "{{storeId}}"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Ratings",
+      "item": [
+        {
+          "name": "List Ratings",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/ratings?page=1&pageSize=10", "host": ["{{baseUrl}}"], "path": ["ratings"], "query": [{ "key": "page", "value": "1" }, { "key": "pageSize", "value": "10" }] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if (json.items && json.items.length > 0) {",
+                  "  pm.collectionVariables.set('ratingId', json.items[0].id);",
+                  "  pm.collectionVariables.set('storeId', json.items[0].store.id);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create/Update Rating (POST)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/ratings", "host": ["{{baseUrl}}"], "path": ["ratings"] },
+            "body": { "mode": "raw", "raw": "{\n  \"storeId\": \"{{storeId}}\",\n  \"rating\": 5\n}" }
+          }
+        },
+        {
+          "name": "Create/Update Rating (PUT)",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/ratings", "host": ["{{baseUrl}}"], "path": ["ratings"] },
+            "body": { "mode": "raw", "raw": "{\n  \"storeId\": \"{{storeId}}\",\n  \"rating\": 4\n}" }
+          }
+        },
+        {
+          "name": "Delete Rating",
+          "request": {
+            "method": "DELETE",
+            "url": { "raw": "{{baseUrl}}/ratings/{{ratingId}}", "host": ["{{baseUrl}}"], "path": ["ratings", "{{ratingId}}"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Dashboard (ADMIN)",
+      "item": [
+        {
+          "name": "Summary",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/dashboard/summary", "host": ["{{baseUrl}}"], "path": ["dashboard", "summary"] }
+          }
+        }
+      ]
+    }
+  ]
+}

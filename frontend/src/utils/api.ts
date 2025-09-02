@@ -32,11 +32,15 @@ class ApiClient {
           const refreshToken = localStorage.getItem('refreshToken')
           if (refreshToken) {
             try {
-              const { data } = await axios.post<AuthTokens>(`${API_BASE_URL}/auth/refresh`, { refreshToken })
-              localStorage.setItem('accessToken', data.accessToken)
-              localStorage.setItem('refreshToken', data.refreshToken)
+              const { data } = await axios.post<{ tokens: AuthTokens } | AuthTokens>(
+                `${API_BASE_URL}/auth/refresh`,
+                { refreshToken }
+              )
+              const tokens: AuthTokens = (data as any).tokens ?? (data as any)
+              localStorage.setItem('accessToken', tokens.accessToken)
+              localStorage.setItem('refreshToken', tokens.refreshToken)
               // Retry original request
-              error.config.headers.Authorization = `Bearer ${data.accessToken}`
+              error.config.headers.Authorization = `Bearer ${tokens.accessToken}`
               return this.client.request(error.config)
             } catch {
               localStorage.removeItem('accessToken')
@@ -51,23 +55,23 @@ class ApiClient {
   }
 
   async get<T>(url: string, params?: Record<string, any>): Promise<T> {
-    const response: AxiosResponse<ApiResponse<T>> = await this.client.get(url, { params })
-    return response.data.data
+    const response: AxiosResponse<ApiResponse<T> | T> = await this.client.get(url, { params })
+    return (response.data as any).data ?? (response.data as any)
   }
 
   async post<T>(url: string, data?: any): Promise<T> {
-    const response: AxiosResponse<ApiResponse<T>> = await this.client.post(url, data)
-    return response.data.data
+    const response: AxiosResponse<ApiResponse<T> | T> = await this.client.post(url, data)
+    return (response.data as any).data ?? (response.data as any)
   }
 
   async put<T>(url: string, data?: any): Promise<T> {
-    const response: AxiosResponse<ApiResponse<T>> = await this.client.put(url, data)
-    return response.data.data
+    const response: AxiosResponse<ApiResponse<T> | T> = await this.client.put(url, data)
+    return (response.data as any).data ?? (response.data as any)
   }
 
   async delete<T>(url: string): Promise<T> {
-    const response: AxiosResponse<ApiResponse<T>> = await this.client.delete(url)
-    return response.data.data
+    const response: AxiosResponse<ApiResponse<T> | T> = await this.client.delete(url)
+    return (response.data as any).data ?? (response.data as any)
   }
 }
 
