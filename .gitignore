@@ -1,0 +1,320 @@
+# ===============================================
+# Store Rating System - Comprehensive .gitignore
+# ===============================================
+
+# ===== DEPENDENCIES =====
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+.pnpm-store/
+
+# ===== ENVIRONMENT & CONFIG =====
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env.staging
+.env.*.local
+
+# Configuration files with secrets
+config/local.json
+config/production.json
+config/development.json
+.npmrc
+
+# ===== BUILD OUTPUTS =====
+dist/
+build/
+out/
+.next/
+.nuxt/
+.cache/
+.parcel-cache/
+
+# ===== FRONTEND SPECIFIC =====
+# React/Vite
+.vite/
+*.tsbuildinfo
+.eslintcache
+coverage/
+
+# Static files (if auto-generated)
+public/uploads/
+public/assets/
+static/uploads/
+
+# ===== BACKEND SPECIFIC =====
+# TypeScript
+*.tsbuildinfo
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+.pnpm-debug.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Uploads and user content
+uploads/
+temp/
+tmp/
+public/uploads/
+static/uploads/
+
+# ===== DATABASE =====
+# SQLite
+*.db
+*.sqlite
+*.sqlite3
+
+# MySQL dumps
+*.sql
+dump.sql
+backup.sql
+
+# PostgreSQL
+*.dump
+
+# Prisma
+prisma/migrations/
+!prisma/migrations/.gitkeep
+prisma/dev.db*
+
+# Database backups
+db_backups/
+*.backup
+
+# ===== DOCKER =====
+# Docker volumes
+docker-compose.override.yml
+.docker/
+**/Dockerfile.dev
+**/docker-compose.dev.yml
+
+# ===== EDITOR & IDE =====
+# VSCode
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+!.vscode/*.code-snippets
+
+# WebStorm/IntelliJ
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# Vim
+*.swp
+*.swo
+*~
+
+# Emacs
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+auto-save-list
+tramp
+.\#*
+
+# ===== OPERATING SYSTEM =====
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon?
+._*
+.Spotlight-V100
+.Trashes
+.fseventsd
+.TemporaryItems
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+*.stackdump
+[Dd]esktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+*.lnk
+
+# Linux
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+.nfs*
+
+# ===== SECURITY & KEYS =====
+# SSL certificates
+*.pem
+*.key
+*.crt
+*.csr
+*.p12
+*.pfx
+
+# SSH keys
+id_rsa
+id_dsa
+id_ecdsa
+id_ed25519
+*.pub
+
+# JWT secrets
+jwt-secret.txt
+private.key
+public.key
+
+# API keys and secrets
+secrets/
+.secrets/
+keys/
+credentials/
+
+# ===== TESTING =====
+# Test coverage
+coverage/
+.nyc_output/
+*.lcov
+.coverage
+htmlcov/
+.tox/
+.pytest_cache/
+.jest/
+
+# Test databases
+test.db
+test.sqlite
+*_test.db
+
+# ===== MONITORING & ANALYTICS =====
+# Application logs
+app.log
+error.log
+access.log
+combined.log
+*.log.*
+
+# Performance monitoring
+.clinic/
+profile-*
+*.cpuprofile
+*.heapprofile
+
+# ===== DEPLOYMENT =====
+# PM2
+.pm2/
+ecosystem.config.js
+
+# Serverless
+.serverless/
+.serverless_plugins/
+
+# Terraform
+*.tfstate
+*.tfstate.*
+.terraform/
+.terraform.lock.hcl
+
+# Kubernetes
+*.yaml.tmp
+kustomization.yaml
+
+# ===== MISCELLANEOUS =====
+# Temporary files
+*.tmp
+*.temp
+*~
+.cache/
+.temp/
+
+# Archive files
+*.zip
+*.tar.gz
+*.rar
+*.7z
+
+# Backup files
+*.bak
+*.backup
+*.old
+*.orig
+
+# Generated documentation
+docs/api/
+api-docs/
+documentation/generated/
+
+# ===== PROJECT SPECIFIC =====
+# Store images (if stored locally)
+public/store-images/
+uploads/store-photos/
+static/avatars/
+
+# Generated reports
+reports/
+exports/
+*.csv
+*.xlsx
+*.pdf
+
+# Cache directories
+.cache/
+.temp/
+.tmp/
+
+# Email templates (compiled)
+email-templates/compiled/
+
+# ===== KEEP THESE FILES =====
+# Keep empty directories
+!**/.gitkeep
+
+# Keep example files
+!config/config.example.json
+!.env.example
+
+# Keep important docs
+!README.md
+!CHANGELOG.md
+!LICENSE
+!docs/
+
+# Keep CI/CD configs
+!.github/
+!.gitlab-ci.yml
+!.travis.yml
+!Jenkinsfile
+
+# ===============================================
+# END OF GITIGNORE
+# ===============================================
