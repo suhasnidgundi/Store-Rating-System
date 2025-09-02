@@ -10,11 +10,27 @@ const accessTokenOptions: SignOptions = { expiresIn: config.JWT_EXPIRES_IN as Si
 const refreshTokenOptions: SignOptions = { expiresIn: config.JWT_REFRESH_EXPIRES_IN as SignOptions['expiresIn'] }
 
 export function signAccessToken(payload: JwtPayloadBase) {
-  return jwt.sign({ ...payload }, config.JWT_SECRET as Secret, accessTokenOptions)
+  try {
+    console.log('Signing access token for user:', payload.sub)
+    const token = jwt.sign({ ...payload }, config.JWT_SECRET as Secret, accessTokenOptions)
+    console.log('Access token signed successfully')
+    return token
+  } catch (error) {
+    console.error('signAccessToken error:', error)
+    throw error
+  }
 }
 
 export function signRefreshToken(payload: JwtPayloadBase) {
-  return jwt.sign({ ...payload }, config.JWT_REFRESH_SECRET as Secret, refreshTokenOptions)
+  try {
+    console.log('Signing refresh token for user:', payload.sub)
+    const token = jwt.sign({ ...payload }, config.JWT_REFRESH_SECRET as Secret, refreshTokenOptions)
+    console.log('Refresh token signed successfully')
+    return token
+  } catch (error) {
+    console.error('signRefreshToken error:', error)
+    throw error
+  }
 }
 
 export function verifyAccessToken(token: string) {

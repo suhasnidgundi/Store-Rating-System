@@ -7,6 +7,8 @@ export function notFoundHandler(_req: Request, _res: Response, next: NextFunctio
 }
 
 export function errorHandler(err: unknown, _req: Request, res: Response, _next: NextFunction) {
+  console.error('Error handler caught:', err)
+  
   if (err instanceof HttpError) {
     if (err.statusCode >= 500) logger.error(err.message, { stack: err.stack, details: err.details, code: err.code })
     return res.status(err.statusCode).json({

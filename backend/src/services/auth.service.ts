@@ -24,15 +24,31 @@ export async function registerUser(input: { name: string; email: string; passwor
 }
 
 export async function loginUser(input: { email: string; password: string }) {
-  const user = await prisma.user.findUnique({ where: { email: input.email } })
-  if (!user) throw Unauthorized('Invalid credentials')
+  try {
+    console.log('Login attempt for:', input.email)
+    const user = await prisma.user.findUnique({ where: { email: input.email } })
+    if (!user) {
+      console.log('User not found:', input.email)
+      throw Unauthorized('Invalid credentials')
+    }
 
-  const ok = await comparePassword(input.password, user.password)
-  if (!ok) throw Unauthorized('Invalid credentials')
+    console.log('User found, checking password...')
+    const ok = await comparePassword(input.password, user.password)
+    if (!ok) {
+      console.log('Password mismatch for:', input.email)
+      throw Unauthorized('Invalid credentials')
+    }
 
-  const accessToken = signAccessToken({ sub: user.id, role: user.role })
-  const refreshToken = signRefreshToken({ sub: user.id, role: user.role })
-  return { user: sanitizeUser(user), tokens: { accessToken, refreshToken } }
+    console.log('Password valid, generating tokens...')
+    const accessToken = signAccessToken({ sub: user.id, role: user.role })
+    const refreshToken = signRefreshToken({ sub: user.id, role: user.role })
+    
+    console.log('Tokens generated successfully')
+    return { user: sanitizeUser(user), tokens: { accessToken, refreshToken } }
+  } catch (error) {
+    console.error('loginUser error:', error)
+    throw error
+  }
 }
 
 export function sanitizeUser<T extends { password: string }>(u: T) {

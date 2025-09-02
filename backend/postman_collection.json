@@ -39,10 +39,12 @@
               "script": {
                 "exec": [
                   "pm.test('Status 201', () => pm.response.code === 201);",
-                  "const json = pm.response.json();",
-                  "pm.collectionVariables.set('accessToken', json.tokens.accessToken);",
-                  "pm.collectionVariables.set('refreshToken', json.tokens.refreshToken);",
-                  "pm.collectionVariables.set('userId', json.user.id);"
+                  "if (pm.response.code === 201) {",
+                  "  const json = pm.response.json();",
+                  "  pm.collectionVariables.set('accessToken', json.tokens.accessToken);",
+                  "  pm.collectionVariables.set('refreshToken', json.tokens.refreshToken);",
+                  "  pm.collectionVariables.set('userId', json.user.id);",
+                  "}"
                 ]
               }
             }
@@ -66,10 +68,12 @@
               "script": {
                 "exec": [
                   "pm.test('Status 201', () => pm.response.code === 201);",
-                  "const json = pm.response.json();",
-                  "pm.collectionVariables.set('accessToken', json.tokens.accessToken);",
-                  "pm.collectionVariables.set('refreshToken', json.tokens.refreshToken);",
-                  "pm.collectionVariables.set('userId', json.user.id);"
+                  "if (pm.response.code === 201) {",
+                  "  const json = pm.response.json();",
+                  "  pm.collectionVariables.set('accessToken', json.tokens.accessToken);",
+                  "  pm.collectionVariables.set('refreshToken', json.tokens.refreshToken);",
+                  "  pm.collectionVariables.set('userId', json.user.id);",
+                  "}"
                 ]
               }
             }
@@ -93,10 +97,12 @@
               "script": {
                 "exec": [
                   "pm.test('Status 200', () => pm.response.code === 200);",
-                  "const json = pm.response.json();",
-                  "pm.collectionVariables.set('accessToken', json.tokens.accessToken);",
-                  "pm.collectionVariables.set('refreshToken', json.tokens.refreshToken);",
-                  "pm.collectionVariables.set('userId', json.user.id);"
+                  "if (pm.response.code === 200) {",
+                  "  const json = pm.response.json();",
+                  "  pm.collectionVariables.set('accessToken', json.tokens.accessToken);",
+                  "  pm.collectionVariables.set('refreshToken', json.tokens.refreshToken);",
+                  "  pm.collectionVariables.set('userId', json.user.id);",
+                  "}"
                 ]
               }
             }
@@ -120,9 +126,11 @@
               "script": {
                 "exec": [
                   "pm.test('Status 200', () => pm.response.code === 200);",
-                  "const json = pm.response.json();",
-                  "pm.collectionVariables.set('accessToken', json.tokens.accessToken);",
-                  "pm.collectionVariables.set('refreshToken', json.tokens.refreshToken);"
+                  "if (pm.response.code === 200) {",
+                  "  const json = pm.response.json();",
+                  "  pm.collectionVariables.set('accessToken', json.tokens.accessToken);",
+                  "  pm.collectionVariables.set('refreshToken', json.tokens.refreshToken);",
+                  "}"
                 ]
               }
             }

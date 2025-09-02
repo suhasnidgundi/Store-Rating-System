@@ -4,13 +4,23 @@ import { verifyRefreshToken, signAccessToken, signRefreshToken } from '../utils/
 import { Unauthorized } from '../utils/errors'
 
 export async function register(req: Request, res: Response) {
-  const { user, tokens } = await registerUser(req.body)
-  return res.status(201).json({ user, tokens })
+  try {
+    const { user, tokens } = await registerUser(req.body)
+    return res.status(201).json({ user, tokens })
+  } catch (error) {
+    console.error('Register error:', error)
+    throw error
+  }
 }
 
 export async function login(req: Request, res: Response) {
-  const { user, tokens } = await loginUser(req.body)
-  return res.json({ user, tokens })
+  try {
+    const { user, tokens } = await loginUser(req.body)
+    return res.json({ user, tokens })
+  } catch (error) {
+    console.error('Login error:', error)
+    throw error
+  }
 }
 
 export async function refresh(req: Request, res: Response) {
