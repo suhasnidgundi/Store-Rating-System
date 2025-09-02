@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { api } from '../utils/api'
-import { Store, StoresQuery, StoreForm, PaginatedResponse } from '../types'
+import type { Store, StoresQuery, StoreForm, PaginatedResponse } from '../types'
 
 export const useStores = (params?: StoresQuery) => {
   return useQuery({

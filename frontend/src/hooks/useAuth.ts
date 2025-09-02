@@ -1,6 +1,6 @@
 import { useAuthStore } from '../stores/auth'
 import { api } from '../utils/api'
-import { LoginForm, RegisterForm, User, AuthTokens } from '../types'
+import type { LoginForm, RegisterForm, User, AuthTokens } from '../types'
 import { useMutation } from '@tanstack/react-query'
 
 export const useAuth = () => {

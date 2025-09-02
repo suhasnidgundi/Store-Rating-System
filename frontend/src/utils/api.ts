@@ -1,5 +1,6 @@
-import axios, { AxiosInstance, AxiosResponse } from 'axios'
-import { AuthTokens, ApiResponse } from '../types'
+import axios from 'axios'
+import type { AxiosInstance, AxiosResponse } from 'axios'
+import type { AuthTokens, ApiResponse } from '../types'
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api'
 
